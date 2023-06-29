@@ -1,14 +1,13 @@
 {
     "manifest_version": 3,
     "name": "ShortVanish",
-    "description": "Hide Youtube Shorts, Instagram Reels, TikTok video from now on",
+    "description": "Hide Youtube Shorts, Instagram Reels to retire your mother",
     "version": "0.1.0",
     "author": "Patryk Ostern",
-    "permissions": [
-        "activeTab"
-    ],
+    "permissions": ["tabs", "activeTab"],
     "host_permissions": [
-        "*://*/*"
+        "*://*.instagram.com/*",
+        "*://*.youtube.com/*"    
     ],
     "icons": {
         "16": "icons/SV-16.png",
@@ -24,12 +23,9 @@
             "128": "icons/SV-128.png"
         }
     },
-    "background": {
-        "service_worker": "scripts/background.js"
-    },
     "content_scripts": [
         {
-          "matches": ["http://*/*", "https://*/*"],
+          "matches": ["*://*.instagram.com/*", "*://*.youtube.com/*"],
           "js": ["scripts/contentScript.js"],
           "run_at": "document_idle"
         }
