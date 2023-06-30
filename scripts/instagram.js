@@ -3,7 +3,7 @@ disableReels(window.location.href);
 
 // Listen for messages from the background script, when url changes
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-    if (message.url) {
+    if (message === 'instagram') {
         disableReels(window.location.href);
     }
   });
@@ -13,7 +13,6 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 function disableReels(url) {
     redirectURLs(url);
     hideButtons();
-    hideFromFeed();
     // `MutationObserver` is used to detect when the unchanged reels button is added to the DOM, if it wasn't detected before
     startMutationObserver();
 }
@@ -66,8 +65,4 @@ function redirectURLs(url) {
     if (url.includes("/reels/")) {
         window.location.href = "https://www.instagram.com/";
     }
-}
-
-function hideFromFeed() {
-
 }
