@@ -11,11 +11,38 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
 // We disable whole reels on Instagram
 function disableInstagram(url) {
-    console.log("URL: ", url)
     redirectURLs(url);
     hideReelsButtons();
+    startMutationObserver();
 }
 
+// Mutation Observer function
+var mutationObserver;
+
+function startMutationObserver() {
+    var targetNode = document.querySelector('body');
+    if (targetNode) {
+        mutationObserver = new MutationObserver(function(mutationsList) {
+            for (var mutation of mutationsList) {
+                if (mutation.type === 'childList') {
+                    var reelsLogo = document.querySelector('a[href="/reels/"]');
+                    if (reelsLogo && !reelsLogo.classList.contains('hidden-reels-logo')) {
+                        hideReelsButtons();
+                        stopMutationObserver(); // Stop the Mutation Observer
+                        break;
+                    }
+                }
+            }
+        });
+
+        var config = { childList: true, subtree: true };
+        mutationObserver.observe(targetNode, config);
+    }
+}
+
+function stopMutationObserver() {
+    mutationObserver.disconnect();
+}
 
 // Section for blocking reels on Instagram
 // ---------------------------------------
@@ -27,8 +54,8 @@ function hideReelsButtons() {
         var parentDiv = reelsLogo.closest('div:not([class])');
         if (parentDiv) {
             parentDiv.hidden = true;
+            reelsLogo.classList.add('hidden-reels-logo');
         }
-        console.log(parentDiv);
     }
 }
 
