@@ -3,7 +3,7 @@ disableReels(window.location.href);
 
 // Listen for messages from the background script, when url changes
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-    if (message === 'instagram') {
+    if (message.message === 'instagram') {
         disableReels(window.location.href);
     }
   });
