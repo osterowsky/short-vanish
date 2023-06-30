@@ -1,22 +1,17 @@
-checkURL(window.location.href);
+// We disable reels on Instagram when user freshly open or reloads instagram page
+disableInstagram(window.location.href);
 
-// Listen for messages from the background script
+// Listen for messages from the background script, when url changes slightly
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     if (message.url) {
-      checkURL(window.location.href)
+        disableInstagram(window.location.href);
     }
   });
-  
 
-function checkURL(url) {
-    console.log("URL: " + url);
-    if (url.includes("instagram.com")) {
-        disableInstagram(url);
-    }
-}
 
 // We disable whole reels on Instagram
 function disableInstagram(url) {
+    console.log("URL: ", url)
     redirectURLs(url);
     hideReelsButtons();
 }

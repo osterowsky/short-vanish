@@ -28,8 +28,11 @@
     },
     "content_scripts": [
         {
-          "matches": ["*://*.instagram.com/*", "*://*.youtube.com/*"],
-          "js": ["scripts/content.js"]        
+          "matches": ["*://*.instagram.com/*"],
+          "js": ["scripts/instagram.js"]        
+        }, {
+          "matches": ["*://*.youtube.com/*"],
+          "js": ["scripts/youtube.js"]
         }
     ]
 }
