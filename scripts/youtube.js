@@ -13,6 +13,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 function disableShorts(url) {
     redirectURLs(url);
     hideButtons();
+    hideFromFeed();
     // `MutationObserver` is used to detect when the unchanged shorts button is added to the DOM, if it wasn't detected before
     startMutationObserver();
 }
@@ -28,16 +29,16 @@ function startMutationObserver() {
         mutationObserver = new MutationObserver(function(mutationsList) {
             for (var mutation of mutationsList) {
                 if (mutation.type === 'childList') {
-                    var shortsButton = document.querySelectorAll('a[title="Shorts"]');
-                    console.log(shortsButton.length)
-                    if (shortsButton.length > 1) {
-                            shortsButton.forEach(function (button) {
+                    var shortsButtons = document.querySelectorAll('a[title="Shorts"]');
+                    console.log(shortsButtons.length)
+                    if (shortsButtons.length > 1) {
+                            shortsButtons.forEach(function (button) {
                                 hideButton(button);
                             });
                             stopMutationObserver();
                             break;
-                    } else if (shortsButton.length === 1) {
-                            hideButton(shortsButton[0])
+                    } else if (shortsButtons.length === 1) {
+                            hideButton(shortsButtons[0])
                             if (window.location.href.includes("youtube.com/watch?")) {
                                 stopMutationObserver();
                                 break;
@@ -66,10 +67,10 @@ function stopMutationObserver() {
 // ---------------------------------------
 
 function hideButtons() {
-    var shortsButton = document.querySelectorAll('a[title="Shorts"]');
+    var shortsButtons = document.querySelectorAll('a[title="Shorts"]');
     // We get the 3rd parent node to not affect UI    
-    if (shortsButton.length > 0) {
-        shortsButton.forEach(function (button) {
+    if (shortsButtons.length > 0) {
+        shortsButtons.forEach(function (button) {
            hideButton(button);
         });
     }
@@ -84,5 +85,15 @@ function hideButton(button) {
 function redirectURLs(url) {
     if (url.includes("/shorts/")) {
         window.location.href = "https://www.youtube.com/";
+    }
+}
+
+function hideFromFeed() {
+    var shortsSections = document.querySelectorAll('ytd-rich-shelf-renderer[is-shorts=""]');
+    if (shortsSections.length > 0) {
+        shortsSections.forEach(function (section) {
+           section.hidden = true;
+           section.classList.add('hidden-shorts-section');
+        });
     }
 }
