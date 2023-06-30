@@ -49,7 +49,7 @@ function stopMutationObserver() {
 // Section for blocking reels on Instagram
 // ---------------------------------------
 
-function hideButtons() {
+function hideButton() {
     var reelsButton = document.querySelector('a[href="/reels/"]');
     // We get the 3rd parent node to not affect UI
     if (reelsButton) {

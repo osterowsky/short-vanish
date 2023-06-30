@@ -27,11 +27,20 @@ function startMutationObserver() {
         mutationObserver = new MutationObserver(function(mutationsList) {
             for (var mutation of mutationsList) {
                 if (mutation.type === 'childList') {
-                    var shortsButton = document.querySelector('a[title="Shorts"]');
-                    if (shortsButton && !shortsButton.classList.contains('hidden-shorts-button')) {
-                        hideButtons();
-                        stopMutationObserver(); // Stop the Mutation Observer
-                        break;
+                    var shortsButton = document.querySelectorAll('a[title="Shorts"]');
+                    console.log(shortsButton.length)
+                    if (shortsButton.length > 1) {
+                            shortsButton.forEach(function (button) {
+                                hideButton(button);
+                            });
+                            stopMutationObserver();
+                            break;
+                    } else if (shortsButton.length === 1) {
+                            hideButton(shortsButton[0])
+                            if (window.location.href.includes("youtube.com/watch?")) {
+                                stopMutationObserver();
+                                break;
+                            }
                     }
                 }
             }
@@ -43,6 +52,7 @@ function startMutationObserver() {
 }
 
 function stopMutationObserver() {
+    console.log("disconnecting");
     mutationObserver.disconnect();
 }
 
@@ -54,13 +64,17 @@ function hideButtons() {
     // We get the 3rd parent node to not affect UI    
     if (shortsButton.length > 0) {
         shortsButton.forEach(function (button) {
-            button.hidden = true;
-            button.classList.add('hidden-shorts-button');
+           hideButton(button);
         });
     }
     
 }
 
+function hideButton(button) {
+    button.hidden = true;
+    button.classList.add('hidden-shorts-button');
+}
+ 
 function redirectURLs(url) {
     if (url.includes("/shorts/")) {
         window.location.href = "https://www.youtube.com/";
