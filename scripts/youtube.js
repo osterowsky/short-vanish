@@ -22,6 +22,7 @@ function disableShorts(url) {
 var mutationObserver;
 
 function startMutationObserver() {
+
     var targetNode = document.querySelector('body');
     if (targetNode) {
         mutationObserver = new MutationObserver(function(mutationsList) {
@@ -41,13 +42,18 @@ function startMutationObserver() {
                                 stopMutationObserver();
                                 break;
                             }
-                    }
+                    } 
                 }
             }
         });
 
         var config = { childList: true, subtree: true };
         mutationObserver.observe(targetNode, config);
+
+        // Checks if we are in parts of youtube where there are no buttons
+        if (window.location.href.includes("studio.youtube.com")) {
+            stopMutationObserver();
+        }
     }
 }
 

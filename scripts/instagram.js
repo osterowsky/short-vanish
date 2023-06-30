@@ -12,7 +12,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 // We disable reels on Instagram
 function disableReels(url) {
     redirectURLs(url);
-    hideButtons();
+    hideButton();
     // `MutationObserver` is used to detect when the unchanged reels button is added to the DOM, if it wasn't detected before
     startMutationObserver();
 }
@@ -29,7 +29,7 @@ function startMutationObserver() {
                 if (mutation.type === 'childList') {
                     var reelsButton = document.querySelector('a[href="/reels/"]');
                     if (reelsButton && !reelsButton.classList.contains('hidden-reels-button')) {
-                        hideButtons();
+                        hideButton();
                         stopMutationObserver(); // Stop the Mutation Observer
                         break;
                     }
