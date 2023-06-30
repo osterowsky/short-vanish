@@ -1,22 +1,25 @@
 // We disable reels on Instagram when user freshly open or reloads instagram page
-disableInstagram(window.location.href);
+disableReels(window.location.href);
 
-// Listen for messages from the background script, when url changes slightly
+// Listen for messages from the background script, when url changes
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     if (message.url) {
-        disableInstagram(window.location.href);
+        disableReels(window.location.href);
     }
   });
 
 
-// We disable whole reels on Instagram
-function disableInstagram(url) {
+// We disable reels on Instagram
+function disableReels(url) {
     redirectURLs(url);
-    hideReelsButtons();
+    hideButtons();
+    hideFromFeed();
+    // `MutationObserver` is used to detect when the unchanged reels button is added to the DOM, if it wasn't detected before
     startMutationObserver();
 }
 
-// Mutation Observer function
+// Section for Mutation Observer
+// ---------------------------------------
 var mutationObserver;
 
 function startMutationObserver() {
@@ -25,9 +28,9 @@ function startMutationObserver() {
         mutationObserver = new MutationObserver(function(mutationsList) {
             for (var mutation of mutationsList) {
                 if (mutation.type === 'childList') {
-                    var reelsLogo = document.querySelector('a[href="/reels/"]');
-                    if (reelsLogo && !reelsLogo.classList.contains('hidden-reels-logo')) {
-                        hideReelsButtons();
+                    var reelsButton = document.querySelector('a[href="/reels/"]');
+                    if (reelsButton && !reelsButton.classList.contains('hidden-reels-button')) {
+                        hideButtons();
                         stopMutationObserver(); // Stop the Mutation Observer
                         break;
                     }
@@ -47,14 +50,14 @@ function stopMutationObserver() {
 // Section for blocking reels on Instagram
 // ---------------------------------------
 
-function hideReelsButtons() {
-    var reelsLogo = document.querySelector('a[href="/reels/"]');
+function hideButtons() {
+    var reelsButton = document.querySelector('a[href="/reels/"]');
     // We get the 3rd parent node to not affect UI
-    if (reelsLogo) {
-        var parentDiv = reelsLogo.closest('div:not([class])');
+    if (reelsButton) {
+        var parentDiv = reelsButton.closest('div:not([class])');
         if (parentDiv) {
             parentDiv.hidden = true;
-            reelsLogo.classList.add('hidden-reels-logo');
+            reelsButton.classList.add('hidden-reels-button');
         }
     }
 }
@@ -63,4 +66,8 @@ function redirectURLs(url) {
     if (url.includes("/reels/")) {
         window.location.href = "https://www.instagram.com/";
     }
+}
+
+function hideFromFeed() {
+
 }
