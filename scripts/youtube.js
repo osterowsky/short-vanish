@@ -50,12 +50,15 @@ function stopMutationObserver() {
 // ---------------------------------------
 
 function hideButtons() {
-    var shortsButton = document.querySelector('a[title="Shorts"]');
+    var shortsButton = document.querySelectorAll('a[title="Shorts"]');
     // We get the 3rd parent node to not affect UI    
-    if (shortsButton) {
-        shortsButton.hidden = true;
-        shortsButton.classList.add('hidden-shorts-button');
+    if (shortsButton.length > 0) {
+        shortsButton.forEach(function (button) {
+            button.hidden = true;
+            button.classList.add('hidden-shorts-button');
+        });
     }
+    
 }
 
 function redirectURLs(url) {
