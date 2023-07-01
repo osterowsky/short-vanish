@@ -13,12 +13,16 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 function disableShorts(url) {
     redirectURLs(url);
     hideButtons();
-    hideFromFeed();
+
+    // We check if we are in the results page or in the feed page to hide correct short sections
+    window.location.href.includes("youtube.com/results?") ? hideFromResults() : hideFromFeed();
+
     // `MutationObserver` is used to detect when the unchanged shorts button is added to the DOM, if it wasn't detected before
     startMutationObserver();
+
 }
 
-// Section for Mutation Observer
+// Section for Mutation Observer for Shorts Buttons
 // ---------------------------------------
 var mutationObserver;
 
@@ -59,7 +63,36 @@ function startMutationObserver() {
 }
 
 function stopMutationObserver() {
-    console.log("disconnecting");
+    mutationObserver.disconnect();
+}
+
+// Section for Feed Mutation Observer
+// ---------------------------------------
+
+var feedMutationObserver;
+
+function startFeedMutationObserver(target) {
+
+    var targetNode = document.querySelector('body');
+    if (targetNode) {
+        mutationObserver = new MutationObserver(function(mutationsList) {
+            for (var mutation of mutationsList) {
+                if (mutation.type === 'childList') {
+                    var shortsSections = document.querySelectorAll(target+':not(.hidden-shorts-section)');
+                    if (shortsSections.length > 0) {
+                        shortsSections.forEach(function (section) {
+                            hideShortsSection(section);
+                        });
+                    }
+                }        
+            }
+        });
+
+        var config = { childList: true, subtree: true };
+        mutationObserver.observe(targetNode, config);
+}}
+
+function stopFeedMutationObserver() {
     mutationObserver.disconnect();
 }
 
@@ -89,11 +122,28 @@ function redirectURLs(url) {
 }
 
 function hideFromFeed() {
-    var shortsSections = document.querySelectorAll('ytd-rich-shelf-renderer[is-shorts=""]');
+    var target = 'ytd-rich-shelf-renderer[is-shorts=""]';
+    var shortsSections = document.querySelectorAll(target);
     if (shortsSections.length > 0) {
         shortsSections.forEach(function (section) {
-           section.hidden = true;
-           section.classList.add('hidden-shorts-section');
+            hideShortsSection(section);
         });
     }
+    startFeedMutationObserver(target);
+}
+
+function hideFromResults() {
+    var target = 'ytd-reel-shelf-renderer';
+    var shortsSections = document.querySelectorAll(target);
+    if (shortsSections.length > 0) {
+        shortsSections.forEach(function (section) {
+           hideShortsSection(section);
+        });
+    }
+    startFeedMutationObserver(target);
+}
+
+function hideShortsSection(section) {
+    section.hidden = true;
+    section.classList.add('hidden-shorts-section');
 }

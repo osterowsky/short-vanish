@@ -27,8 +27,8 @@ function startMutationObserver() {
         mutationObserver = new MutationObserver(function(mutationsList) {
             for (var mutation of mutationsList) {
                 if (mutation.type === 'childList') {
-                    var reelsButton = document.querySelector('a[href="/reels/"]');
-                    if (reelsButton && !reelsButton.classList.contains('hidden-reels-button')) {
+                    var reelsButtons = document.querySelectorAll('a[href="/reels/"]:not(.hidden-reels-button)');
+                    if (reelsButtons) {
                         hideButton();
                         stopMutationObserver(); // Stop the Mutation Observer
                         break;
