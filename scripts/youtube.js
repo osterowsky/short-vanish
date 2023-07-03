@@ -8,13 +8,12 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     }
 });
 
-
 // We disable shorts on Youtube
 function disableShorts(url) {
     redirectURLs(url);
     hideButtons();
     // We check if we are in the results page or in the feed page to hide correct short sections
-    window.location.href.includes("youtube.com/results?") ? hideSections('ytd-reel-shelf-renderer') : hideSections('ytd-rich-shelf-renderer[is-shorts=""]');
+    window.location.href.includes("youtube.com/results?") || window.location.href.includes("youtube.com/watch?") ? hideSections('ytd-reel-shelf-renderer') : hideSections('ytd-rich-shelf-renderer[is-shorts=""]');
 }
 
 // Section for Mutation Observer
