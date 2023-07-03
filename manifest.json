@@ -4,7 +4,7 @@
     "description": "Hide Youtube Shorts & Instagram Reels to retire your mother",
     "version": "0.1.0",
     "author": "Patryk Ostern",
-    "permissions": ["tabs", "activeTab"],
+    "permissions": ["tabs", "activeTab", "storage"],
     "host_permissions": [
         "*://*.instagram.com/*",
         "*://*.youtube.com/*"    
