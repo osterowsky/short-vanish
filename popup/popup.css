@@ -35,7 +35,11 @@ header {
     display: inline-block;
     width: 60px;
     height: 34px;
-}
+  }
+
+  .switch-medium {
+    transform: scale(0.6);
+  }
 
 .slider {
     position: absolute;
@@ -105,14 +109,21 @@ header {
     align-items: center;
     flex: 1;
     box-shadow: 0 5px #b524f9;
-    transition: transform 0.3s ease-in-out;
+}
+
+.card-container {
+  margin: 10px auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.icon {
+  width: 20px;
+  height: auto;
 }
 
 #toggle-card-element:hover {
   transform: scale(1.0);
-}
-.card-element:hover {
-  transform: scale(1.1);
 }
 
 /* Section for text */
