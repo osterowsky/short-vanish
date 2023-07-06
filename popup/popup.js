@@ -16,6 +16,22 @@ const youtubePlugin = document.getElementById("enableYoutube");
     });  
 });
 
+  instagramPlugin.addEventListener("change", function() {
+    // Store the checkbox state of instagram in the Storage API
+    const isChecked = instagramPlugin.checked;
+    chrome.storage.local.set({
+      'instagramPlugin': isChecked
+    });
+  });
+
+  youtubePlugin.addEventListener("change", function() {
+    // Store the checkbox state of youtube in the Storage API
+    const isChecked = youtubePlugin.checked;
+    chrome.storage.local.set({
+      'youtubePlugin': isChecked
+    });
+  });
+
   document.addEventListener("DOMContentLoaded", function() {
     // Get the checkbox state from the Storage API and set the initial checkbox state
     chrome.storage.local.get(['enablePlugin', 'instagramPlugin', 'youtubePlugin'], function(result) {
