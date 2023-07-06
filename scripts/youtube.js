@@ -1,6 +1,6 @@
 // We disable shorts on Youtube when user freshly open or reloads youtube page
-chrome.storage.local.get('enablePlugin', function(result) {
-    if (result.enablePlugin === true) {
+chrome.storage.local.get('youtubePlugin', function(result) {
+    if (result.youtubePlugin === true) {
         disableShorts(window.location.href);    
     }
 });

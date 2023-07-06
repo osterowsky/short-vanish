@@ -1,7 +1,7 @@
 // We disable reels on Instagram when user freshly open or reloads instagram page
-chrome.storage.local.get('enablePlugin', function(result) {
-    if (result.enablePlugin === true) {
-        disableShorts(window.location.href);    
+chrome.storage.local.get('instagramPlugin', function(result) {
+    if (result.instagramPlugin === true) {
+        disableReels(window.location.href);    
     }
 });
   
