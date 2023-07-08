@@ -1,17 +1,15 @@
 // We disable reels on Instagram when user freshly open or reloads instagram page
 chrome.storage.local.get('instagramPlugin', function(result) {
     if (result.instagramPlugin === true) {
-        disableReels(window.location.href);    
-    }
-});
-  
-// Listen for messages from the background script, when url changes
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-    if (message.message === 'instagram') {
         disableReels(window.location.href);
     }
-  });
-
+    // Listen for messages from the background script, when url changes
+    chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+        if (message.message === 'instagram') {
+            disableReels(window.location.href);
+        }
+    });
+});
 
 // We disable reels on Instagram
 function disableReels(url) {
