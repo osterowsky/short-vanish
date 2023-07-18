@@ -2,12 +2,13 @@
 chrome.storage.local.get('instagramPlugin', function(result) {
     if (result.instagramPlugin === true) {
         disableReels(window.location.href);
-         // Listen for messages from the background script, when url changes
-        chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-            if (message.message === 'instagram') {
-                disableReels(window.location.href);
-            }
-        });
+    }
+});
+
+// Listen for messages from the background script, when url changes
+ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+        if (message.message === 'instagram') {
+            disableReels(window.location.href);
     }
 });
 
@@ -32,8 +33,6 @@ function startMutationObserver() {
                     var reelsButtons = document.querySelectorAll('a[href="/reels/"]:not(.hidden-reels-button)');
                     if (reelsButtons) {
                         hideButton();
-                        stopMutationObserver(); // Stop the Mutation Observer
-                        break;
                     }
                 }
             }
