@@ -15,7 +15,7 @@ Short Vanish is a Chrome extension designed to disable YouTube Shorts and Instag
    
 - To build from source, clone this repository:
 ```
-git clone https://github.com/ostrowsky/short-vanish.git
+git clone https://github.com/osterowsky/short-vanish.git
 ```
 
 ## Usage
